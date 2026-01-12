@@ -1,66 +1,37 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using System.Collections.Generic;
 
 public class DangerZoneManager : MonoBehaviour
 {
-    [Header("Cards")]
     public Button[] cardButtons;
+
     public Sprite[] faceDownSprites;
     public Sprite safeSprite;
     public Sprite bombSprite;
 
-    [Header("Level System")]
-    public LevelData[] levels;                // assign 9 LevelData objects
-    public Image levelIndicatorImage;
-
-    [Header("Panels")]
-    public GameObject successPanel;
-    public GameObject failPanel;
-
-    private int currentLevel = 0;             // starts at level 1 (index 0)
+    private int bombIndex;
     private bool cardChosen = false;
-
-    private List<int> bombIndexes = new List<int>();
     private int clickedIndex = -1;
 
     void Start()
     {
-        LoadLevel(currentLevel);
+        SetupLevel();
     }
 
-    public void LoadLevel(int levelIndex)
+    void SetupLevel()
     {
-        successPanel.SetActive(false);
-        failPanel.SetActive(false);
-
         cardChosen = false;
-        clickedIndex = -1;
-        bombIndexes.Clear();
 
-        // clamp just in case
-        levelIndex = Mathf.Clamp(levelIndex, 0, levels.Length - 1);
+        bombIndex = Random.Range(0, cardButtons.Length);
 
-        LevelData level = levels[levelIndex];
-
-        // set indicator sprite
-        levelIndicatorImage.sprite = level.levelIndicator;
-
-        // choose unique random bomb positions
-        while (bombIndexes.Count < level.bombCount)
-        {
-            int r = Random.Range(0, cardButtons.Length);
-            if (!bombIndexes.Contains(r))
-                bombIndexes.Add(r);
-        }
-
-        // reset cards
         for (int i = 0; i < cardButtons.Length; i++)
         {
             int index = i;
 
             cardButtons[i].image.sprite = faceDownSprites[i];
+
+            // IMPORTANT: reset rotation properly
             cardButtons[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
 
             cardButtons[i].onClick.RemoveAllListeners();
@@ -70,7 +41,8 @@ public class DangerZoneManager : MonoBehaviour
 
     void OnCardClicked(int index)
     {
-        if (cardChosen) return;
+        if (cardChosen)
+            return;
 
         cardChosen = true;
         clickedIndex = index;
@@ -84,31 +56,20 @@ public class DangerZoneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
-        // flip remaining cards
         for (int i = 0; i < cardButtons.Length; i++)
         {
-            if (i == clickedIndex) continue;
+            if (i == clickedIndex)
+                continue;
 
             StartCoroutine(FlipCard(i, false));
         }
-
-        yield return new WaitForSeconds(1f);
-
-        // SUCCESS or FAIL?
-        if (bombIndexes.Contains(clickedIndex))
-        {
-            failPanel.SetActive(true);
-        }
-        else
-        {
-            successPanel.SetActive(true);
-        }
     }
 
-    IEnumerator FlipCard(int index, bool immediateReveal)
+    IEnumerator FlipCard(int index, bool showResultImmediately)
     {
         RectTransform card = cardButtons[index].transform as RectTransform;
 
+        // PRESS animation
         Vector3 original = card.localScale;
         card.localScale = original * 0.9f;
         yield return new WaitForSeconds(0.05f);
@@ -117,6 +78,7 @@ public class DangerZoneManager : MonoBehaviour
         float duration = 0.25f;
         float elapsed = 0f;
 
+        // 0° -> 90°
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
@@ -125,14 +87,16 @@ public class DangerZoneManager : MonoBehaviour
             yield return null;
         }
 
+        // ensure exactly 90°
         card.localRotation = Quaternion.Euler(0, 90, 0);
 
-        // reveal sprite
-        if (bombIndexes.Contains(index))
+        // 🔁 swap sprite at midpoint
+        if (index == bombIndex)
             cardButtons[index].image.sprite = bombSprite;
         else
             cardButtons[index].image.sprite = safeSprite;
 
+        // 90° -> 180°
         elapsed = 0f;
         while (elapsed < duration)
         {
@@ -142,23 +106,7 @@ public class DangerZoneManager : MonoBehaviour
             yield return null;
         }
 
+        // ensure exactly 180°
         card.localRotation = Quaternion.Euler(0, 180, 0);
-    }
-
-    // called by button on SuccessPanel
-    public void NextLevel()
-    {
-        currentLevel++;
-
-        if (currentLevel >= levels.Length)
-            currentLevel = levels.Length - 1;  // stay at last level
-
-        LoadLevel(currentLevel);
-    }
-
-    // called by button on FailPanel
-    public void RetryLevel()
-    {
-        LoadLevel(currentLevel);
     }
 }
