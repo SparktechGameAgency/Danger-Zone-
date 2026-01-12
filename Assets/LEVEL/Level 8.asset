@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Level 8
   m_EditorClassIdentifier: 
   bombCount: 8
-  levelIndicator: {fileID: 0}
+  levelIndicator: {fileID: 21300000, guid: cc96be6e393c4a543afa174e958e970c, type: 3}
