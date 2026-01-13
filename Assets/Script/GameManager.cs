@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
+
 
 public class DangerZoneManager : MonoBehaviour
 {
@@ -32,8 +34,8 @@ public class DangerZoneManager : MonoBehaviour
 
     public void LoadLevel(int levelIndex)
     {
-        successPanel.SetActive(false);
-        failPanel.SetActive(false);
+        HidePanel(successPanel);
+        HidePanel(failPanel);
 
         cardChosen = false;
         clickedIndex = -1;
@@ -97,11 +99,11 @@ public class DangerZoneManager : MonoBehaviour
         // SUCCESS or FAIL?
         if (bombIndexes.Contains(clickedIndex))
         {
-            failPanel.SetActive(true);
+            ShowPanel(failPanel);
         }
         else
         {
-            successPanel.SetActive(true);
+            ShowPanel(successPanel);
         }
     }
 
@@ -161,4 +163,24 @@ public class DangerZoneManager : MonoBehaviour
     {
         LoadLevel(currentLevel);
     }
+    void ShowPanel(GameObject panel)
+    {
+        panel.SetActive(true);
+        RectTransform rt = panel.GetComponent<RectTransform>();
+        rt.localScale = Vector3.zero;
+
+        rt.DOScale(Vector3.one, 0.6f)
+            .SetEase(Ease.OutElastic);
+    }
+
+    void HidePanel(GameObject panel)
+    {
+        RectTransform rt = panel.GetComponent<RectTransform>();
+
+        rt.DOScale(Vector3.zero, 0.3f)
+            .SetEase(Ease.InBack)
+            .OnComplete(() => panel.SetActive(false));
+    }
+
+
 }
