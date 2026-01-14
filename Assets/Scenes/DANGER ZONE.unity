@@ -2931,6 +2931,7 @@ GameObject:
   - component: {fileID: 1139261351}
   - component: {fileID: 1139261353}
   - component: {fileID: 1139261352}
+  - component: {fileID: 1139261354}
   m_Layer: 5
   m_Name: How to play Pannel
   m_TagString: Untagged
@@ -2997,6 +2998,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1139261350}
   m_CullTransparentMesh: 1
+--- !u!225 &1139261354
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139261350}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1157384165
 GameObject:
   m_ObjectHideFlags: 0
@@ -3008,6 +3021,7 @@ GameObject:
   - component: {fileID: 1157384166}
   - component: {fileID: 1157384168}
   - component: {fileID: 1157384167}
+  - component: {fileID: 1157384169}
   m_Layer: 5
   m_Name: Menu Pannel
   m_TagString: Untagged
@@ -3076,6 +3090,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1157384165}
   m_CullTransparentMesh: 1
+--- !u!225 &1157384169
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157384165}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1187459190
 GameObject:
   m_ObjectHideFlags: 0
@@ -4444,6 +4470,7 @@ GameObject:
   - component: {fileID: 1690702885}
   - component: {fileID: 1690702884}
   - component: {fileID: 1690702886}
+  - component: {fileID: 1690702887}
   m_Layer: 5
   m_Name: Setting Pannel
   m_TagString: Untagged
@@ -4536,6 +4563,18 @@ MonoBehaviour:
   isSoundOn: 1
   isVibrationOn: 1
   isMusicOn: 1
+--- !u!225 &1690702887
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690702882}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1767076740
 GameObject:
   m_ObjectHideFlags: 0
@@ -4860,6 +4899,7 @@ GameObject:
   - component: {fileID: 1847325392}
   - component: {fileID: 1847325391}
   - component: {fileID: 1847325393}
+  - component: {fileID: 1847325394}
   m_Layer: 5
   m_Name: Game Pannel
   m_TagString: Untagged
@@ -4989,6 +5029,18 @@ MonoBehaviour:
   levelIndicatorImage: {fileID: 418512078}
   successPanel: {fileID: 558187205}
   failPanel: {fileID: 343053671}
+--- !u!225 &1847325394
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847325389}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1867622961
 GameObject:
   m_ObjectHideFlags: 0

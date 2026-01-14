@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 
-
 public class DangerZoneManager : MonoBehaviour
 {
     [Header("Cards")]
@@ -14,14 +13,14 @@ public class DangerZoneManager : MonoBehaviour
     public Sprite bombSprite;
 
     [Header("Level System")]
-    public LevelData[] levels;                // assign 9 LevelData objects
+    public LevelData[] levels;
     public Image levelIndicatorImage;
 
     [Header("Panels")]
     public GameObject successPanel;
     public GameObject failPanel;
 
-    private int currentLevel = 0;             // starts at level 1 (index 0)
+    private int currentLevel = 0;
     private bool cardChosen = false;
 
     private List<int> bombIndexes = new List<int>();
@@ -41,15 +40,11 @@ public class DangerZoneManager : MonoBehaviour
         clickedIndex = -1;
         bombIndexes.Clear();
 
-        // clamp just in case
         levelIndex = Mathf.Clamp(levelIndex, 0, levels.Length - 1);
-
         LevelData level = levels[levelIndex];
 
-        // set indicator sprite
         levelIndicatorImage.sprite = level.levelIndicator;
 
-        // choose unique random bomb positions
         while (bombIndexes.Count < level.bombCount)
         {
             int r = Random.Range(0, cardButtons.Length);
@@ -57,7 +52,6 @@ public class DangerZoneManager : MonoBehaviour
                 bombIndexes.Add(r);
         }
 
-        // reset cards
         for (int i = 0; i < cardButtons.Length; i++)
         {
             int index = i;
@@ -78,7 +72,6 @@ public class DangerZoneManager : MonoBehaviour
         clickedIndex = index;
 
         StartCoroutine(FlipCard(index, true));
-
         StartCoroutine(RevealOthersAfterDelay());
     }
 
@@ -86,25 +79,18 @@ public class DangerZoneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
-        // flip remaining cards
         for (int i = 0; i < cardButtons.Length; i++)
         {
             if (i == clickedIndex) continue;
-
             StartCoroutine(FlipCard(i, false));
         }
 
         yield return new WaitForSeconds(1f);
 
-        // SUCCESS or FAIL?
         if (bombIndexes.Contains(clickedIndex))
-        {
             ShowPanel(failPanel);
-        }
         else
-        {
             ShowPanel(successPanel);
-        }
     }
 
     IEnumerator FlipCard(int index, bool immediateReveal)
@@ -129,13 +115,13 @@ public class DangerZoneManager : MonoBehaviour
 
         card.localRotation = Quaternion.Euler(0, 90, 0);
 
-        // reveal sprite
         if (bombIndexes.Contains(index))
             cardButtons[index].image.sprite = bombSprite;
         else
             cardButtons[index].image.sprite = safeSprite;
 
         elapsed = 0f;
+
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
@@ -147,30 +133,30 @@ public class DangerZoneManager : MonoBehaviour
         card.localRotation = Quaternion.Euler(0, 180, 0);
     }
 
-    // called by button on SuccessPanel
     public void NextLevel()
     {
         currentLevel++;
 
         if (currentLevel >= levels.Length)
-            currentLevel = levels.Length - 1;  // stay at last level
+            currentLevel = levels.Length - 1;
 
         LoadLevel(currentLevel);
     }
 
-    // called by button on FailPanel
     public void RetryLevel()
     {
         LoadLevel(currentLevel);
     }
+
     void ShowPanel(GameObject panel)
     {
         panel.SetActive(true);
         RectTransform rt = panel.GetComponent<RectTransform>();
+
         rt.localScale = Vector3.zero;
 
         rt.DOScale(Vector3.one, 0.6f)
-            .SetEase(Ease.OutElastic);
+          .SetEase(Ease.OutElastic);
     }
 
     void HidePanel(GameObject panel)
@@ -178,25 +164,22 @@ public class DangerZoneManager : MonoBehaviour
         RectTransform rt = panel.GetComponent<RectTransform>();
 
         rt.DOScale(Vector3.zero, 0.3f)
-            .SetEase(Ease.InBack)
-            .OnComplete(() => panel.SetActive(false));
+          .SetEase(Ease.InBack)
+          .OnComplete(() => panel.SetActive(false));
     }
 
     public void RestartGame()
     {
-        currentLevel = 0;          // reset to level 1 (index 0)
+        currentLevel = 0;
         cardChosen = false;
         clickedIndex = -1;
         bombIndexes.Clear();
 
-        LoadLevel(currentLevel);   // reload first level
+        LoadLevel(currentLevel);
     }
 
     private void OnEnable()
     {
         RestartGame();
     }
-
-
-
 }
