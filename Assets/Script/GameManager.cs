@@ -182,5 +182,21 @@ public class DangerZoneManager : MonoBehaviour
             .OnComplete(() => panel.SetActive(false));
     }
 
+    public void RestartGame()
+    {
+        currentLevel = 0;          // reset to level 1 (index 0)
+        cardChosen = false;
+        clickedIndex = -1;
+        bombIndexes.Clear();
+
+        LoadLevel(currentLevel);   // reload first level
+    }
+
+    private void OnEnable()
+    {
+        RestartGame();
+    }
+
+
 
 }
