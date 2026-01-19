@@ -3,6 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "LevelData", menuName = "DangerZone/LevelData")]
 public class LevelData : ScriptableObject
 {
-    public int bombCount;            // how many bombs in this level
-    public Sprite levelIndicator;    // UI image showing the level number or icon
+    public int bombCount;
+    public Sprite levelIndicator;
+
+    [Header("Timer")]
+    public float levelTime = 120f; // seconds (02:00)
 }

@@ -20,11 +20,21 @@ public class DangerZoneManager : MonoBehaviour
     public GameObject successPanel;
     public GameObject failPanel;
 
+    [Header("Timer UI")]
+    public Text countdownText;
+
+    [Header("Result UI (Success Panel)")]
+    public Text finishedTimeText;
+    public Text levelText;
+
     private int currentLevel = 0;
     private bool cardChosen = false;
 
     private List<int> bombIndexes = new List<int>();
     private int clickedIndex = -1;
+
+    private float timeRemaining;
+    private float timeUsed;
 
     void Start()
     {
@@ -36,6 +46,8 @@ public class DangerZoneManager : MonoBehaviour
         HidePanel(successPanel);
         HidePanel(failPanel);
 
+        StopAllCoroutines();
+
         cardChosen = false;
         clickedIndex = -1;
         bombIndexes.Clear();
@@ -44,6 +56,11 @@ public class DangerZoneManager : MonoBehaviour
         LevelData level = levels[levelIndex];
 
         levelIndicatorImage.sprite = level.levelIndicator;
+
+        timeRemaining = level.levelTime;
+        timeUsed = 0f;
+
+        StartCoroutine(LevelTimer());
 
         while (bombIndexes.Count < level.bombCount)
         {
@@ -57,11 +74,34 @@ public class DangerZoneManager : MonoBehaviour
             int index = i;
 
             cardButtons[i].image.sprite = faceDownSprites[i];
-            cardButtons[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
+            cardButtons[i].transform.localRotation = Quaternion.identity;
 
             cardButtons[i].onClick.RemoveAllListeners();
             cardButtons[i].onClick.AddListener(() => OnCardClicked(index));
         }
+    }
+
+    IEnumerator LevelTimer()
+    {
+        while (timeRemaining > 0 && !cardChosen)
+        {
+            timeRemaining -= Time.deltaTime;
+            timeUsed += Time.deltaTime;
+            UpdateTimerUI(timeRemaining);
+            yield return null;
+        }
+
+        if (!cardChosen)
+        {
+            ShowPanel(failPanel);
+        }
+    }
+
+    void UpdateTimerUI(float time)
+    {
+        int minutes = Mathf.FloorToInt(time / 60);
+        int seconds = Mathf.FloorToInt(time % 60);
+        countdownText.text = minutes.ToString("00") + ":" + seconds.ToString("00");
     }
 
     void OnCardClicked(int index)
@@ -71,7 +111,7 @@ public class DangerZoneManager : MonoBehaviour
         cardChosen = true;
         clickedIndex = index;
 
-        StartCoroutine(FlipCard(index, true));
+        StartCoroutine(FlipCard(index));
         StartCoroutine(RevealOthersAfterDelay());
     }
 
@@ -82,25 +122,25 @@ public class DangerZoneManager : MonoBehaviour
         for (int i = 0; i < cardButtons.Length; i++)
         {
             if (i == clickedIndex) continue;
-            StartCoroutine(FlipCard(i, false));
+            StartCoroutine(FlipCard(i));
         }
 
         yield return new WaitForSeconds(1f);
 
         if (bombIndexes.Contains(clickedIndex))
+        {
             ShowPanel(failPanel);
+        }
         else
+        {
+            ShowSuccessInfo();
             ShowPanel(successPanel);
+        }
     }
 
-    IEnumerator FlipCard(int index, bool immediateReveal)
+    IEnumerator FlipCard(int index)
     {
         RectTransform card = cardButtons[index].transform as RectTransform;
-
-        Vector3 original = card.localScale;
-        card.localScale = original * 0.9f;
-        yield return new WaitForSeconds(0.05f);
-        card.localScale = original;
 
         float duration = 0.25f;
         float elapsed = 0f;
@@ -115,10 +155,8 @@ public class DangerZoneManager : MonoBehaviour
 
         card.localRotation = Quaternion.Euler(0, 90, 0);
 
-        if (bombIndexes.Contains(index))
-            cardButtons[index].image.sprite = bombSprite;
-        else
-            cardButtons[index].image.sprite = safeSprite;
+        cardButtons[index].image.sprite =
+            bombIndexes.Contains(index) ? bombSprite : safeSprite;
 
         elapsed = 0f;
 
@@ -133,10 +171,20 @@ public class DangerZoneManager : MonoBehaviour
         card.localRotation = Quaternion.Euler(0, 180, 0);
     }
 
+    void ShowSuccessInfo()
+    {
+        int minutes = Mathf.FloorToInt(timeUsed / 60);
+        int seconds = Mathf.FloorToInt(timeUsed % 60);
+
+        finishedTimeText.text = "Finised: " +
+            minutes.ToString("00") + ":" + seconds.ToString("00");
+
+        levelText.text = "Level: " + (currentLevel + 1);
+    }
+
     public void NextLevel()
     {
         currentLevel++;
-
         if (currentLevel >= levels.Length)
             currentLevel = levels.Length - 1;
 
@@ -152,34 +200,28 @@ public class DangerZoneManager : MonoBehaviour
     {
         panel.SetActive(true);
         RectTransform rt = panel.GetComponent<RectTransform>();
-
         rt.localScale = Vector3.zero;
-
-        rt.DOScale(Vector3.one, 0.6f)
-          .SetEase(Ease.OutElastic);
+        rt.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutElastic);
     }
 
     void HidePanel(GameObject panel)
     {
-        RectTransform rt = panel.GetComponent<RectTransform>();
+        if (!panel.activeSelf) return;
 
+        RectTransform rt = panel.GetComponent<RectTransform>();
         rt.DOScale(Vector3.zero, 0.3f)
           .SetEase(Ease.InBack)
           .OnComplete(() => panel.SetActive(false));
     }
 
-    public void RestartGame()
-    {
-        currentLevel = 0;
-        cardChosen = false;
-        clickedIndex = -1;
-        bombIndexes.Clear();
-
-        LoadLevel(currentLevel);
-    }
-
     private void OnEnable()
     {
         RestartGame();
+    }
+
+    public void RestartGame()
+    {
+        currentLevel = 0;
+        LoadLevel(currentLevel);
     }
 }
