@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 
+
 public class DangerZoneManager : MonoBehaviour
 {
     [Header("Cards")]
@@ -36,10 +37,22 @@ public class DangerZoneManager : MonoBehaviour
     private float timeRemaining;
     private float timeUsed;
 
+    audioManager audioManager;
+
+
+
     void Start()
     {
         LoadLevel(currentLevel);
+        
     }
+
+    public void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<audioManager>();
+
+    }
+
 
     public void LoadLevel(int levelIndex)
     {

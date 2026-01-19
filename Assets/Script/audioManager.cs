@@ -18,12 +18,22 @@ public class audioManager : MonoBehaviour
     public AudioClip lose;
 
 
+    public void Start()
+    {
+        background.clip = menuMusic;
+        background.Play();
+    }
 
+    public void playWinSFX()
+    {
+        SFX.clip = win;
+        SFX.Play();
+    }
 
-
-
-
-
-
+    public void playLoseSFX()
+    {
+        SFX.clip = lose;
+        SFX.Play();
+    }
 
 }
