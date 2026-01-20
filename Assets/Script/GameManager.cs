@@ -40,6 +40,10 @@ public class DangerZoneManager : MonoBehaviour
     audioManager audioManager;
 
 
+    [Header("Result UI (Fail Panel)")]
+    public Text loseFinishedTimeText;
+    public Text loseLevelText;
+
 
     void Start()
     {
@@ -106,8 +110,10 @@ public class DangerZoneManager : MonoBehaviour
 
         if (!cardChosen)
         {
+            ShowLoseInfo();
             ShowPanel(failPanel);
         }
+
     }
 
     void UpdateTimerUI(float time)
@@ -116,6 +122,18 @@ public class DangerZoneManager : MonoBehaviour
         int seconds = Mathf.FloorToInt(time % 60);
         countdownText.text = minutes.ToString("00") + ":" + seconds.ToString("00");
     }
+
+    void ShowLoseInfo()
+    {
+        int minutes = Mathf.FloorToInt(timeUsed / 60);
+        int seconds = Mathf.FloorToInt(timeUsed % 60);
+
+        loseFinishedTimeText.text = "Finished: " +
+            minutes.ToString("00") + ":" + seconds.ToString("00");
+
+        loseLevelText.text = "Level: " + (currentLevel + 1);
+    }
+
 
     void OnCardClicked(int index)
     {
@@ -142,6 +160,7 @@ public class DangerZoneManager : MonoBehaviour
 
         if (bombIndexes.Contains(clickedIndex))
         {
+            ShowLoseInfo();
             ShowPanel(failPanel);
         }
         else
