@@ -8,6 +8,13 @@ public class CanvasManager : MonoBehaviour
 
     private GameObject currentPanel;
 
+    [Header("Game Panels")]
+    public GameObject basicGamePanel;   // Reference for Basic Game Panel
+    public GameObject sandGamePanel;    // Reference for Sand Game Panel
+
+
+
+
     // Hide all panels instantly (no animation)
     public void HideAll()
     {
@@ -19,6 +26,28 @@ public class CanvasManager : MonoBehaviour
 
         currentPanel = null;
     }
+
+
+
+
+    public void ActivateThemePanel(string theme)
+    {
+        // First, deactivate both game panels
+        basicGamePanel.SetActive(false);
+        sandGamePanel.SetActive(false);
+
+        // Now, activate the selected theme panel
+        if (theme == "basic")
+        {
+            basicGamePanel.SetActive(true);
+        }
+        else if (theme == "sand")
+        {
+            sandGamePanel.SetActive(true);
+        }
+    }
+
+
 
     // Smoothly transition to target panel
     public void ShowOnly(GameObject target)
