@@ -3991,10 +3991,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Pannel Basic
       objectReference: {fileID: 0}
+    - target: {fileID: 1520073067151536549, guid: 370935c856fc653449b4db1ea923b58a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2095025364777431499, guid: 370935c856fc653449b4db1ea923b58a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2078619775}
+    - target: {fileID: 2726376922816324181, guid: 370935c856fc653449b4db1ea923b58a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RetryLevel
+      objectReference: {fileID: 0}
     - target: {fileID: 3394194772227794054, guid: 370935c856fc653449b4db1ea923b58a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -4132,6 +4140,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2078619774}
     m_Modifications:
+    - target: {fileID: 1899703888773835479, guid: d16cd6e3eebccc846a7f7db4d54bf3f3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RetryLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582324222167279170, guid: d16cd6e3eebccc846a7f7db4d54bf3f3, type: 3}
+      propertyPath: m_Name
+      value: retry
+      objectReference: {fileID: 0}
     - target: {fileID: 3431379701239121960, guid: d16cd6e3eebccc846a7f7db4d54bf3f3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -4139,6 +4155,14 @@ PrefabInstance:
     - target: {fileID: 4127720815888076608, guid: d16cd6e3eebccc846a7f7db4d54bf3f3, type: 3}
       propertyPath: m_Name
       value: 'Game Pannel Sand '
+      objectReference: {fileID: 0}
+    - target: {fileID: 4127720815888076608, guid: d16cd6e3eebccc846a7f7db4d54bf3f3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620203940808524641, guid: d16cd6e3eebccc846a7f7db4d54bf3f3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5272860260875299413, guid: d16cd6e3eebccc846a7f7db4d54bf3f3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
