@@ -175,4 +175,12 @@ public class CanvasManager : MonoBehaviour
         else
             Show(target);
     }
+
+    //public void OnBackButtonPressed()
+    //{
+    //    // Hide the theme panel and show the menu panel
+    //    HidePanel(themePanel);
+    //    ShowPanel(menuPanel);
+    //}
+
 }
