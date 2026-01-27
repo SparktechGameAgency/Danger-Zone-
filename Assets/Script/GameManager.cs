@@ -6,7 +6,16 @@ using DG.Tweening;
 
 
 public class DangerZoneManager : MonoBehaviour
+
+
 {
+
+    [Header("Final Completion Panel")]
+    public GameObject congratsPanel;
+    public CanvasManager canvasManager;
+    public GameObject menuPanel;
+
+
     [Header("Cards")]
     public Button[] cardButtons;
     public Sprite[] faceDownSprites;
@@ -165,9 +174,18 @@ public class DangerZoneManager : MonoBehaviour
         }
         else
         {
-            ShowSuccessInfo();
-            ShowPanel(successPanel);
+            // If last level → skip win panel and show congratulations
+            if (currentLevel >= levels.Length - 1)
+            {
+                ShowCongratulations();
+            }
+            else
+            {
+                ShowSuccessInfo();
+                ShowPanel(successPanel);
+            }
         }
+
     }
 
     IEnumerator FlipCard(int index)
@@ -216,12 +234,35 @@ public class DangerZoneManager : MonoBehaviour
 
     public void NextLevel()
     {
-        currentLevel++;
-        if (currentLevel >= levels.Length)
-            currentLevel = levels.Length - 1;
+        if (currentLevel >= levels.Length - 1)
+        {
+            ShowCongratulations();
+            return;
+        }
 
+        currentLevel++;
         LoadLevel(currentLevel);
     }
+
+
+    void ShowCongratulations()
+    {
+        // Hide win & lose panels
+        HidePanel(successPanel);
+        HidePanel(failPanel);
+
+        // Show congratulations panel
+        congratsPanel.SetActive(true);
+
+        RectTransform rt = congratsPanel.GetComponent<RectTransform>();
+        if (rt != null)
+        {
+            rt.localScale = Vector3.zero;
+            rt.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutElastic);
+        }
+    }
+
+
 
     public void RetryLevel()
     {
@@ -256,4 +297,25 @@ public class DangerZoneManager : MonoBehaviour
         currentLevel = 0;
         LoadLevel(currentLevel);
     }
+
+
+    public void RestartFromBeginning()
+    {
+        congratsPanel.SetActive(false);
+        currentLevel = 0;
+        LoadLevel(currentLevel);
+    }
+
+    public void GoHome()
+    {
+        congratsPanel.SetActive(false);
+
+        if (canvasManager != null && menuPanel != null)
+        {
+            canvasManager.ShowOnly(menuPanel);
+        }
+    }
+
+
+
 }
