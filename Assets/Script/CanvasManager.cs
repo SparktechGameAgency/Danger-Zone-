@@ -175,4 +175,7 @@ public class CanvasManager : MonoBehaviour
         else
             Show(target);
     }
+
+
+
 }
