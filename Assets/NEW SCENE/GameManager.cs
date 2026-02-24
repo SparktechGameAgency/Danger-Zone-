@@ -124,6 +124,16 @@ public class DangerZoneManager : MonoBehaviour
         countdownText.text = m.ToString("00") + ":" + s.ToString("00");
     }
 
+
+
+    // Haptic feedback helper
+    private void Vibrate()
+    {
+#if UNITY_ANDROID || UNITY_IOS
+        Handheld.Vibrate(); // basic vibration on mobile
+#endif
+    }
+
     // ── Card Interaction ──────────────────────────────────────────────────────
 
     void OnCardClicked(int index)
@@ -174,6 +184,9 @@ public class DangerZoneManager : MonoBehaviour
             yield return null;
         }
         card.localRotation = Quaternion.Euler(0, 180, 0);
+
+
+        //audioManager.Instance.PlayClickSFX();
     }
 
     IEnumerator RevealOthersAfterDelay()
@@ -191,18 +204,20 @@ public class DangerZoneManager : MonoBehaviour
 
         // Evaluate result
         // Evaluate result
+        // Evaluate result
         if (bombIndexes.Contains(clickedIndex))
         {
             // Player clicked a bomb → lose
-            audioManager.Instance.PlayLoseSFX(); // 🔊 play bomb/lose sound
+            audioManager.Instance.PlayLoseSFX(); // play bomb/lose sound
+            Vibrate(); // vibrate on losing
             ShowLoseInfo();
             ShowPanel(failPanel);
         }
         else
         {
             // Player clicked safe zone → win
-            audioManager.Instance.PlayWinSFX(); // 🔊 play win sound
-
+            audioManager.Instance.PlayWinSFX(); // play win sound
+            Vibrate(); // optional: you can vibrate also for correct pick
             if (currentLevel >= levels.Length - 1)
                 ShowCongratulations();
             else

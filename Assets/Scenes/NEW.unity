@@ -1413,7 +1413,7 @@ MonoBehaviour:
   gameMusic: {fileID: 8300000, guid: 0bd4309e1a1a85145ae1110ca72d497b, type: 3}
   win: {fileID: 8300000, guid: 9b26a0e90118b814c99b5111abbeec2d, type: 3}
   lose: {fileID: 8300000, guid: f413a5db1f057634687ff265c718355d, type: 3}
-  click: {fileID: 8300000, guid: b008f7e16b733c1448faacd55c942526, type: 3}
+  click: {fileID: 8300000, guid: 0a242bcd70c861449bffad19b7d0680a, type: 3}
   fadeDuration: 1
 --- !u!4 &465095141
 Transform:
