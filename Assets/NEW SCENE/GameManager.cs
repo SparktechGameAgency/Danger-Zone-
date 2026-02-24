@@ -251,14 +251,14 @@ public class DangerZoneManager : MonoBehaviour
     // Retry button
     public void RetryLevel()
     {
-        audioManager.Instance.PlayLoseSFX(); // optional: retry click SFX
+        audioManager.Instance.PlayClickSFX();
         LoadLevel(currentLevel);
     }
 
     // Next Level button
     public void NextLevel()
     {
-        audioManager.Instance.PlayWinSFX(); // optional: button click SFX
+        audioManager.Instance.PlayClickSFX(); 
         if (currentLevel >= levels.Length - 1)
         {
             ShowCongratulations();

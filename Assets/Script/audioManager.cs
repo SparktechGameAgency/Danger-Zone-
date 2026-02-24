@@ -18,6 +18,8 @@ public class audioManager : MonoBehaviour
     public AudioClip win;
     public AudioClip lose;
 
+    public AudioClip click;
+
     [Header("Fade Settings")]
     public float fadeDuration = 1f;
 
@@ -102,6 +104,13 @@ public class audioManager : MonoBehaviour
     {
         sfxSource.PlayOneShot(lose);
     }
+
+    public void PlayClickSFX()
+    {
+        // Optional: Add a click sound effect and play it here
+        sfxSource.PlayOneShot(click);
+    }
+
 
     // 🎚 Volume Controls
     public void SetMusicVolume(float value)
