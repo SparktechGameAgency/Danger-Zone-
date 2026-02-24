@@ -24,4 +24,6 @@ public class CanvasManager : MonoBehaviour
                 panel.SetActive(false);
         }
     }
+
+
 }

@@ -135,7 +135,12 @@ public class DangerZoneManager : MonoBehaviour
 
         // Lock all cards immediately
         foreach (var btn in cardButtons)
+        {
             btn.interactable = false;
+            ColorBlock cb = btn.colors;
+            cb.disabledColor = Color.white; // keep full opacity when disabled
+            btn.colors = cb;
+        }
 
         StartCoroutine(FlipCard(index));
         StartCoroutine(RevealOthersAfterDelay());

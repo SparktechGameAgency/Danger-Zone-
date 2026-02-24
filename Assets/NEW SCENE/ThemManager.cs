@@ -12,6 +12,14 @@ public class ThemeManager : MonoBehaviour
     public GameObject gamePanelSand;
     public GameObject gamePanelBasic;
 
+    public GameObject Setting;
+    public GameObject HowToPlay;
+
+
+    [Header("Extra Panels")]
+    public GameObject howToPlayPanel;
+    public GameObject settingPanel;
+
     [Header("DangerZone Managers (drag the root of each prefab)")]
     public DangerZoneManager sandManager;
     public DangerZoneManager basicManager;
@@ -54,6 +62,12 @@ public class ThemeManager : MonoBehaviour
     public void OnThemePressed()
     {
         canvasManager.ShowOnly(themePanel);
+    }
+
+
+    public void SettingPressed()
+    {
+        canvasManager.ShowOnly(Setting);
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -114,4 +128,30 @@ public class ThemeManager : MonoBehaviour
         gamePanelBasic.SetActive(false);
         canvasManager.ShowOnly(menuPanel);
     }
+
+    // MENU BUTTON → Settings
+    public void OnSettingsPressed()
+    {
+        canvasManager.ShowOnly(settingPanel);
+    }
+
+    // MENU BUTTON → How To Play
+    public void OnHowToPlayPressed()
+    {
+        canvasManager.ShowOnly(howToPlayPanel);
+    }
+
+    // BACK button inside Settings
+    public void OnSettingsBackPressed()
+    {
+        canvasManager.ShowOnly(menuPanel);
+    }
+
+    // BACK button inside How To Play
+    public void OnHowToPlayBackPressed()
+    {
+        canvasManager.ShowOnly(menuPanel);
+    }
+
+
 }
