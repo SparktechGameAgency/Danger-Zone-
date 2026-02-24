@@ -42,7 +42,7 @@ public class ThemeManager : MonoBehaviour
         // Always begin on the menu, both game panels are off
         gamePanelSand.SetActive(false);
         gamePanelBasic.SetActive(false);
-        canvasManager.ShowOnly(menuPanel);
+        //canvasManager.ShowOnly(menuPanel);
     }
 
     // ─────────────────────────────────────────────────────────────────────────

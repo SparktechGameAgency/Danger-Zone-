@@ -1,31 +1,35 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
 public class LoadingManager : MonoBehaviour
 {
-    [Header("Panels")]
-    public CanvasManager canvasManager;   // Reference to your CanvasManager
+    [Header("References")]
+    public CanvasManager canvasManager;
     public GameObject loadingPanel;
+    public GameObject menuPanel;
     public Slider loadingSlider;
-    public GameObject menuPanel;         // Main menu panel
 
     [Header("Settings")]
-    public float loadDuration = 3f;      // Simulated load time in seconds
+    public float loadDuration = 3f;
 
     private void Start()
     {
-        // Start the loading process
-        canvasManager.HideAll();
-        loadingPanel.SetActive(true);
         StartCoroutine(PlayLoading());
     }
 
     private IEnumerator PlayLoading()
     {
+        // 1️⃣ Turn everything off
+        canvasManager.HideAll();
+
+        // 2️⃣ Show loading panel only
+        canvasManager.ShowOnly(loadingPanel);
+
         loadingSlider.value = 0f;
         float elapsed = 0f;
 
+        // 3️⃣ Fake loading progress
         while (elapsed < loadDuration)
         {
             elapsed += Time.deltaTime;
@@ -33,16 +37,11 @@ public class LoadingManager : MonoBehaviour
             yield return null;
         }
 
-        // Ensure slider is full
         loadingSlider.value = 1f;
 
-        // Small delay for smoothness (optional)
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
 
-        // Hide loading panel
-        //canvasManager.Hide(loadingPanel);
-
-        // Show main menu panel
+        // 4️⃣ Show menu
         canvasManager.ShowOnly(menuPanel);
     }
 }
