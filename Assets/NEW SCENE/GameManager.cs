@@ -296,4 +296,6 @@ public class DangerZoneManager : MonoBehaviour
             rt.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutElastic);
         }
     }
+
+
 }

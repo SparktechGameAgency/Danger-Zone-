@@ -1319,11 +1319,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e2e77fb9439459498c6c47398059ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  background: {fileID: 2076079292}
-  SFX: {fileID: 1621503681}
+  musicSource: {fileID: 2076079292}
+  sfxSource: {fileID: 1621503681}
   menuMusic: {fileID: 8300000, guid: 85657c45a8335ee42ac0c9569a57102a, type: 3}
+  gameMusic: {fileID: 8300000, guid: 0bd4309e1a1a85145ae1110ca72d497b, type: 3}
   win: {fileID: 8300000, guid: 9b26a0e90118b814c99b5111abbeec2d, type: 3}
   lose: {fileID: 8300000, guid: f413a5db1f057634687ff265c718355d, type: 3}
+  fadeDuration: 1
 --- !u!4 &465095141
 Transform:
   m_ObjectHideFlags: 0
@@ -5252,7 +5254,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

@@ -101,21 +101,18 @@ public class ThemeManager : MonoBehaviour
     // ─────────────────────────────────────────────────────────────────────────
     // INTERNAL: Launch the game safely
     // ─────────────────────────────────────────────────────────────────────────
-
     private IEnumerator LaunchGame(GameObject panel, DangerZoneManager manager)
     {
-        // 1. Turn everything off
         canvasManager.HideAll();
 
-        // 2. Turn the chosen game panel ON
         panel.SetActive(true);
 
-        // 3. Wait 2 frames — Unity needs this to fully wake up the panel
-        //    and ALL child components before any coroutine can run on them
         yield return null;
         yield return null;
 
-        // 4. Start the game — guaranteed safe now
+        // 🎵 Switch to Game Music
+        FindObjectOfType<audioManager>().PlayGameMusic();
+
         manager.LoadLevel(0);
     }
 
@@ -126,7 +123,11 @@ public class ThemeManager : MonoBehaviour
     {
         gamePanelSand.SetActive(false);
         gamePanelBasic.SetActive(false);
+
         canvasManager.ShowOnly(menuPanel);
+
+        // 🎵 Switch back to menu music
+        FindObjectOfType<audioManager>().PlayMenuMusic();
     }
 
     // MENU BUTTON → Settings
