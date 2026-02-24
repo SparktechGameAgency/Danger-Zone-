@@ -190,13 +190,19 @@ public class DangerZoneManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // Evaluate result
+        // Evaluate result
         if (bombIndexes.Contains(clickedIndex))
         {
+            // Player clicked a bomb → lose
+            audioManager.Instance.PlayLoseSFX(); // 🔊 play bomb/lose sound
             ShowLoseInfo();
             ShowPanel(failPanel);
         }
         else
         {
+            // Player clicked safe zone → win
+            audioManager.Instance.PlayWinSFX(); // 🔊 play win sound
+
             if (currentLevel >= levels.Length - 1)
                 ShowCongratulations();
             else
@@ -245,12 +251,14 @@ public class DangerZoneManager : MonoBehaviour
     // Retry button
     public void RetryLevel()
     {
+        audioManager.Instance.PlayLoseSFX(); // optional: retry click SFX
         LoadLevel(currentLevel);
     }
 
     // Next Level button
     public void NextLevel()
     {
+        audioManager.Instance.PlayWinSFX(); // optional: button click SFX
         if (currentLevel >= levels.Length - 1)
         {
             ShowCongratulations();
@@ -259,6 +267,8 @@ public class DangerZoneManager : MonoBehaviour
         currentLevel++;
         LoadLevel(currentLevel);
     }
+
+
 
     // Home button (inside game or congrats panel)
     public void GoHome()
