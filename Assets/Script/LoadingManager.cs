@@ -40,7 +40,7 @@ public class LoadingManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         // Hide loading panel
-        canvasManager.Hide(loadingPanel);
+        //canvasManager.Hide(loadingPanel);
 
         // Show main menu panel
         canvasManager.ShowOnly(menuPanel);

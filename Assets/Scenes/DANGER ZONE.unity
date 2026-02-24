@@ -4297,13 +4297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0598448bca6df1459742c605e729388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panels:
-  - {fileID: 2097516322}
-  - {fileID: 501054489}
-  - {fileID: 1157384165}
-  - {fileID: 1139261350}
-  - {fileID: 1847325389}
-  - {fileID: 632651828}
+  panels: []
   basicGamePanel: {fileID: 1847325389}
   sandGamePanel: {fileID: 1582417893}
 --- !u!1 &2097516322
