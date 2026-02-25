@@ -43,5 +43,6 @@ public class LoadingManager : MonoBehaviour
 
         // 4️⃣ Show menu
         canvasManager.ShowOnly(menuPanel);
+        loadingPanel.SetActive(false);
     }
 }
