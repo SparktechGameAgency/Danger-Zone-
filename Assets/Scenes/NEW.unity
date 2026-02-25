@@ -2475,6 +2475,7 @@ MonoBehaviour:
   loadingPanel: {fileID: 872999544}
   menuPanel: {fileID: 1353211411}
   loadingSlider: {fileID: 587338472}
+  namePanel: {fileID: 1939272332}
   loadDuration: 3
 --- !u!114 &872999547
 MonoBehaviour:
@@ -5232,7 +5233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allPanels:
-  - {fileID: 0}
+  - {fileID: 1939272332}
   - {fileID: 1353211411}
   - {fileID: 559892552}
   - {fileID: 1698609274}
