@@ -60,12 +60,14 @@ public class LoadingManager : MonoBehaviour
 
         if (PlayerPrefs.GetInt("HasLaunched", 0) == 0)
         {
-            // First time ever — show name panel
+            // Mark as launched immediately
+            PlayerPrefs.SetInt("HasLaunched", 1);
+            PlayerPrefs.Save();
+
             canvasManager.ShowOnly(namePanel);
         }
         else
         {
-            // Already launched before — go straight to menu
             canvasManager.ShowOnly(menuPanel);
         }
 
