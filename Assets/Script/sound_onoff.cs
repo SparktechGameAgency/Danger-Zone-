@@ -40,7 +40,7 @@ public class MultiToggleButton : MonoBehaviour
     public void ToggleVibration()
     {
         isVibrationOn = !isVibrationOn;
-        VibrationEnabled = isVibrationOn; // update global state
+        VibrationEnabled = isVibrationOn;
         UpdateButtonImages();
     }
 

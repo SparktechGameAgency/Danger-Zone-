@@ -130,7 +130,10 @@ public class DangerZoneManager : MonoBehaviour
     private void Vibrate()
     {
 #if UNITY_ANDROID || UNITY_IOS
-        Handheld.Vibrate(); // basic vibration on mobile
+        if (MultiToggleButton.VibrationEnabled)
+        {
+            Handheld.Vibrate();
+        }
 #endif
     }
 
