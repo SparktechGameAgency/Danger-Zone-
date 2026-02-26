@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+
+
 
 public class ThemeManager : MonoBehaviour
 {
@@ -29,13 +32,32 @@ public class ThemeManager : MonoBehaviour
     private const string SAND = "sand";
     private const string BASIC = "basic";
 
+
+    [Header("Theme Button Images")]
+    public Image basicThemeImage;
+    public Image sandThemeImage;
+
+    public Sprite basicNormalSprite;
+    public Sprite basicSelectedSprite;
+
+    public Sprite sandNormalSprite;
+    public Sprite sandSelectedSprite;
+
     private string selectedTheme;
+
+    //private void Awake()
+    //{
+    //    // Load saved theme (defaults to basic if never set)
+    //    selectedTheme = PlayerPrefs.GetString(PREF_KEY, BASIC);
+    //}
 
     private void Awake()
     {
-        // Load saved theme (defaults to basic if never set)
         selectedTheme = PlayerPrefs.GetString(PREF_KEY, BASIC);
+        UpdateThemeUI();
     }
+
+
 
     private void Start()
     {
@@ -43,6 +65,20 @@ public class ThemeManager : MonoBehaviour
         gamePanelSand.SetActive(false);
         gamePanelBasic.SetActive(false);
         //canvasManager.ShowOnly(menuPanel);
+    }
+
+    private void UpdateThemeUI()
+    {
+        if (selectedTheme == BASIC)
+        {
+            basicThemeImage.sprite = basicSelectedSprite;
+            sandThemeImage.sprite = sandNormalSprite;
+        }
+        else
+        {
+            basicThemeImage.sprite = basicNormalSprite;
+            sandThemeImage.sprite = sandSelectedSprite;
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -78,8 +114,11 @@ public class ThemeManager : MonoBehaviour
     public void OnSelectSand()
     {
         selectedTheme = SAND;
+
         PlayerPrefs.SetString(PREF_KEY, SAND);
         PlayerPrefs.Save();
+
+        UpdateThemeUI();
         canvasManager.ShowOnly(menuPanel);
     }
 
@@ -87,8 +126,11 @@ public class ThemeManager : MonoBehaviour
     public void OnSelectBasic()
     {
         selectedTheme = BASIC;
+
         PlayerPrefs.SetString(PREF_KEY, BASIC);
         PlayerPrefs.Save();
+
+        UpdateThemeUI();
         canvasManager.ShowOnly(menuPanel);
     }
 

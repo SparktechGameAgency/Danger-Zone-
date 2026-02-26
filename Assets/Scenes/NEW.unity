@@ -1725,7 +1725,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 27de3c566e48eb94cbd4293de2219f6b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 427289b490597ef4d9515ee39a2a61c9, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -5220,6 +5220,12 @@ MonoBehaviour:
   settingPanel: {fileID: 1657652174}
   sandManager: {fileID: 1698609275}
   basicManager: {fileID: 325804935}
+  basicThemeImage: {fileID: 808997683}
+  sandThemeImage: {fileID: 1024474829}
+  basicNormalSprite: {fileID: 21300000, guid: ddf2454ea8833ac42827040752cdf889, type: 3}
+  basicSelectedSprite: {fileID: 21300000, guid: 6401145d8eb2dfb4d8fd1ac765c7248d, type: 3}
+  sandNormalSprite: {fileID: 21300000, guid: ae234517e2345614e89eaead96eec2eb, type: 3}
+  sandSelectedSprite: {fileID: 21300000, guid: f8b42577390953943a08f7a299956e1d, type: 3}
 --- !u!114 &1993710840
 MonoBehaviour:
   m_ObjectHideFlags: 0
