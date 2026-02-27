@@ -45,15 +45,11 @@ public class ThemeManager : MonoBehaviour
 
     private string selectedTheme;
 
-    //private void Awake()
-    //{
-    //    // Load saved theme (defaults to basic if never set)
-    //    selectedTheme = PlayerPrefs.GetString(PREF_KEY, BASIC);
-    //}
+
 
     private void Awake()
     {
-        selectedTheme = PlayerPrefs.GetString(PREF_KEY, BASIC);
+        selectedTheme = PlayerPrefs.GetString(PREF_KEY, SAND);
         UpdateThemeUI();
     }
 

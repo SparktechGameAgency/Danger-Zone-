@@ -3975,9 +3975,6 @@ MonoBehaviour:
   soundButtonImage: {fileID: 740986650}
   vibrationButtonImage: {fileID: 987111361}
   musicButtonImage: {fileID: 1088261508}
-  isSoundOn: 1
-  isVibrationOn: 1
-  isMusicOn: 1
 --- !u!225 &1657652177
 CanvasGroup:
   m_ObjectHideFlags: 0

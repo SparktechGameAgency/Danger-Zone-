@@ -7,8 +7,8 @@ public class audioManager : MonoBehaviour
     public static audioManager Instance;
 
     [Header("Audio Sources")]
-    [SerializeField] private AudioSource musicSource;
-    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioSource musicSource;  // background music only
+    [SerializeField] private AudioSource sfxSource;    // click, win, lose SFX only
 
     [Header("Music Clips")]
     public AudioClip menuMusic;
@@ -17,7 +17,6 @@ public class audioManager : MonoBehaviour
     [Header("SFX Clips")]
     public AudioClip win;
     public AudioClip lose;
-
     public AudioClip click;
 
     [Header("Fade Settings")]
@@ -27,7 +26,6 @@ public class audioManager : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton
         if (Instance == null)
             Instance = this;
         else
@@ -35,7 +33,6 @@ public class audioManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         DontDestroyOnLoad(gameObject);
     }
 
@@ -44,19 +41,18 @@ public class audioManager : MonoBehaviour
         PlayMenuMusic();
     }
 
-    // 🎵 MENU MUSIC
+    // ── Music ─────────────────────────────────────────────────────────────────
+
     public void PlayMenuMusic()
     {
         SwitchMusic(menuMusic);
     }
 
-    // 🎮 GAME MUSIC
     public void PlayGameMusic()
     {
         SwitchMusic(gameMusic);
     }
 
-    // 🎶 Music Switching with Fade
     private void SwitchMusic(AudioClip newClip)
     {
         if (musicSource.clip == newClip) return;
@@ -71,30 +67,43 @@ public class audioManager : MonoBehaviour
     {
         // Fade out
         float startVolume = musicSource.volume;
-
         for (float t = 0; t < fadeDuration; t += Time.deltaTime)
         {
             musicSource.volume = Mathf.Lerp(startVolume, 0, t / fadeDuration);
             yield return null;
         }
-
         musicSource.volume = 0;
-
         musicSource.clip = newClip;
         musicSource.loop = true;
         musicSource.Play();
 
-        // Fade in
-        for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+        // Fade in — but only if music is not muted
+        if (!musicSource.mute)
         {
-            musicSource.volume = Mathf.Lerp(0, 1, t / fadeDuration);
-            yield return null;
+            for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+            {
+                musicSource.volume = Mathf.Lerp(0, 1, t / fadeDuration);
+                yield return null;
+            }
+            musicSource.volume = 1;
         }
-
-        musicSource.volume = 1;
     }
 
-    // 🔊 SFX
+    // ── Called by MultiToggleButton ───────────────────────────────────────────
+    // Only mutes/unmutes the music source — sfxSource is NOT touched here
+    public void SetMusicEnabled(bool enabled)
+    {
+        musicSource.mute = !enabled;
+
+        // If turning music back on, restore full volume
+        if (enabled)
+            musicSource.volume = 1f;
+    }
+
+    // ── SFX ───────────────────────────────────────────────────────────────────
+    // These use sfxSource which is never muted by the music toggle,
+    // only silenced if AudioListener.pause is true (sound toggle OFF)
+
     public void PlayWinSFX()
     {
         sfxSource.PlayOneShot(win);
@@ -107,12 +116,11 @@ public class audioManager : MonoBehaviour
 
     public void PlayClickSFX()
     {
-        // Optional: Add a click sound effect and play it here
         sfxSource.PlayOneShot(click);
     }
 
+    // ── Volume Controls ───────────────────────────────────────────────────────
 
-    // 🎚 Volume Controls
     public void SetMusicVolume(float value)
     {
         musicSource.volume = value;
@@ -123,11 +131,5 @@ public class audioManager : MonoBehaviour
     {
         sfxSource.volume = value;
         PlayerPrefs.SetFloat("SFXVolume", value);
-    }
-
-    public void ToggleMute(bool isMuted)
-    {
-        musicSource.mute = isMuted;
-        sfxSource.mute = isMuted;
     }
 }
