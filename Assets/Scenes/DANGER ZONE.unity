@@ -432,11 +432,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e2e77fb9439459498c6c47398059ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  background: {fileID: 2108273190}
-  SFX: {fileID: 972231743}
+  musicSource: {fileID: 2108273190}
+  sfxSource: {fileID: 972231743}
   menuMusic: {fileID: 8300000, guid: 027611c1579cd8a4f803b71f0731f353, type: 3}
+  gameMusic: {fileID: 0}
   win: {fileID: 8300000, guid: 9b26a0e90118b814c99b5111abbeec2d, type: 3}
   lose: {fileID: 8300000, guid: f413a5db1f057634687ff265c718355d, type: 3}
+  click: {fileID: 0}
+  fadeDuration: 1
 --- !u!1 &281612736
 GameObject:
   m_ObjectHideFlags: 0
@@ -3730,9 +3733,6 @@ MonoBehaviour:
   soundButtonImage: {fileID: 796800916}
   vibrationButtonImage: {fileID: 742388414}
   musicButtonImage: {fileID: 1806384410}
-  isSoundOn: 1
-  isVibrationOn: 1
-  isMusicOn: 1
 --- !u!225 &1690702887
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4042,6 +4042,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a300bd65366a0ca4dac897f8a2431ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1863511435
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1863511437}
+  - component: {fileID: 1863511436}
+  m_Layer: 0
+  m_Name: Ad Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1863511436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863511435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f957a618460ba4c0e833176bdef6d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1863511437
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863511435}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 547.7379, y: 830.4008, z: -7.264497}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2064707628
 GameObject:
   m_ObjectHideFlags: 0
@@ -4297,9 +4341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0598448bca6df1459742c605e729388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panels: []
-  basicGamePanel: {fileID: 1847325389}
-  sandGamePanel: {fileID: 1582417893}
 --- !u!1 &2097516322
 GameObject:
   m_ObjectHideFlags: 0
@@ -4404,8 +4445,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasManager: {fileID: 2078619775}
   loadingPanel: {fileID: 2097516322}
-  loadingSlider: {fileID: 1337339697}
   menuPanel: {fileID: 1157384165}
+  loadingSlider: {fileID: 1337339697}
+  namePanel: {fileID: 0}
   loadDuration: 3
 --- !u!1 &2105504215
 GameObject:
@@ -5067,3 +5109,4 @@ SceneRoots:
   - {fileID: 2078619774}
   - {fileID: 1398239795}
   - {fileID: 267600462}
+  - {fileID: 1863511437}

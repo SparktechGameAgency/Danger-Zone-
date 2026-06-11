@@ -94,7 +94,10 @@ public class DangerZoneManager : MonoBehaviour
         }
 
         // Start the countdown
+        //StartCoroutine(LevelTimer());
+        AdManager.Instance.ShowBanner(); // banner visible during gameplay
         StartCoroutine(LevelTimer());
+        
     }
 
     // ── Timer ─────────────────────────────────────────────────────────────────
@@ -266,11 +269,16 @@ public class DangerZoneManager : MonoBehaviour
 
     // ── Button Callbacks (wire these in Inspector) ────────────────────────────
 
-    // Retry button
+// Retry button — show interstitial first, then reload
     public void RetryLevel()
     {
         audioManager.Instance.PlayClickSFX();
-        LoadLevel(currentLevel);
+
+        // Show interstitial; LoadLevel runs only after the ad closes (or if no ad)
+        AdManager.Instance.ShowInterstitial(() =>
+        {
+            LoadLevel(currentLevel);
+        });
     }
 
     // Next Level button
@@ -295,6 +303,8 @@ public class DangerZoneManager : MonoBehaviour
         congratsPanel.SetActive(false);
         successPanel.SetActive(false);
         failPanel.SetActive(false);
+        
+        AdManager.Instance.HideBanner();
 
         // Tell ThemeManager to go back to menu and deactivate this panel
         if (themeManager != null)
