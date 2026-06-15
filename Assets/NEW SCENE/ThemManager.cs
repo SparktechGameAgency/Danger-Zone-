@@ -22,6 +22,8 @@ public class ThemeManager : MonoBehaviour
     [Header("Extra Panels")]
     public GameObject howToPlayPanel;
     public GameObject settingPanel;
+    
+    public GameObject aboutPanel;
 
     [Header("DangerZone Managers (drag the root of each prefab)")]
     public DangerZoneManager sandManager;
@@ -101,6 +103,15 @@ public class ThemeManager : MonoBehaviour
     {
         canvasManager.ShowOnly(Setting);
     }
+
+    public void AboutPressed()
+    {
+        canvasManager.ShowOnly(aboutPanel);
+    }
+    
+
+
+
 
     // ─────────────────────────────────────────────────────────────────────────
     // THEME PANEL BUTTONS
