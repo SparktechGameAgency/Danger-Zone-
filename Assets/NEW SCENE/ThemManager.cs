@@ -24,6 +24,7 @@ public class ThemeManager : MonoBehaviour
     public GameObject settingPanel;
     
     public GameObject aboutPanel;
+    public GameObject removeadsPanel;
 
     [Header("DangerZone Managers (drag the root of each prefab)")]
     public DangerZoneManager sandManager;
@@ -107,6 +108,11 @@ public class ThemeManager : MonoBehaviour
     public void AboutPressed()
     {
         canvasManager.ShowOnly(aboutPanel);
+    }
+
+    public void RemoveAdsPressed()
+    {
+        canvasManager.ShowOnly(removeadsPanel);
     }
     
 
