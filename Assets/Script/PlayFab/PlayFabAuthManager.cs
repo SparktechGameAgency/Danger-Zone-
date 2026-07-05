@@ -15,9 +15,20 @@ using UnityEngine.UI;
 /// </summary>
 public class PlayFabAuthManager : MonoBehaviour
 {
+    [Header("Canvas Manager")]
+    public CanvasManager canvasManager;
+
     [Header("Panels")]
+    public GameObject loadingPanel;
     public GameObject loginPanel;
     public GameObject signupPanel;
+    public GameObject namePanel;
+    public GameObject menuPanel; // where the player lands after successful login/signup
+
+    [Header("Name Panel Fields")]
+    public TMP_InputField nameInput;
+    public TMP_Text nameErrorText;
+    public Button nameConfirmButton;
 
     [Header("Login Panel Fields")]
     public TMP_InputField loginEmailInput;
@@ -37,20 +48,69 @@ public class PlayFabAuthManager : MonoBehaviour
     private static readonly Regex GmailRegex =
         new Regex(@"^[a-zA-Z0-9._%+-]+@gmail\.com$", RegexOptions.IgnoreCase);
 
+    private const string SavedEmailKey = "DZ_SavedEmail";
+    private const string SavedPasswordKey = "DZ_SavedPassword";
+
     void Start()
     {
+        Debug.Log("[PlayFabAuthManager] Start() running — taking control of panel flow.");
+
         loginButton.onClick.AddListener(OnLoginButtonClicked);
         signupButton.onClick.AddListener(OnSignupButtonClicked);
         goToSignupButton.onClick.AddListener(() => SwitchPanel(true));
         goToLoginButton.onClick.AddListener(() => SwitchPanel(false));
+        nameConfirmButton.onClick.AddListener(OnNameConfirmClicked);
 
-        SwitchPanel(false); // default to login panel
+        canvasManager.ShowOnly(loadingPanel);
+        TryAutoLogin();
+    }
+
+    void TryAutoLogin()
+    {
+        if (PlayerPrefs.HasKey(SavedEmailKey) && PlayerPrefs.HasKey(SavedPasswordKey))
+        {
+            string savedEmail = PlayerPrefs.GetString(SavedEmailKey);
+            string savedPassword = PlayerPrefs.GetString(SavedPasswordKey);
+
+            var request = new LoginWithEmailAddressRequest
+            {
+                Email = savedEmail,
+                Password = savedPassword
+            };
+
+            PlayFabClientAPI.LoginWithEmailAddress(request, OnAutoLoginSuccess, OnAutoLoginFailure);
+        }
+        else
+        {
+            canvasManager.ShowOnly(loginPanel);
+        }
+    }
+
+    void OnAutoLoginSuccess(LoginResult result)
+    {
+        Debug.Log("Auto-login successful. PlayFabId: " + result.PlayFabId);
+        TrackPlayerLogin(PlayerPrefs.GetString(SavedEmailKey), isNewAccount: false);
+        canvasManager.ShowOnly(menuPanel);
+    }
+
+    void OnAutoLoginFailure(PlayFabError error)
+    {
+        Debug.LogWarning("Auto-login failed, clearing saved credentials: " + error.GenerateErrorReport());
+        PlayerPrefs.DeleteKey(SavedEmailKey);
+        PlayerPrefs.DeleteKey(SavedPasswordKey);
+        canvasManager.ShowOnly(loginPanel);
+    }
+
+    void SaveCredentials(string email, string password)
+    {
+        PlayerPrefs.SetString(SavedEmailKey, email);
+        PlayerPrefs.SetString(SavedPasswordKey, password);
+        PlayerPrefs.Save();
     }
 
     void SwitchPanel(bool showSignup)
     {
-        loginPanel.SetActive(!showSignup);
-        signupPanel.SetActive(showSignup);
+        canvasManager.ShowOnly(showSignup ? signupPanel : loginPanel);
         loginErrorText.text = "";
         signupErrorText.text = "";
     }
@@ -100,10 +160,13 @@ public class PlayFabAuthManager : MonoBehaviour
         signupErrorText.text = "Account created!";
 
         string email = signupEmailInput.text.Trim();
+        string password = signupPasswordInput.text;
+
         TrackPlayerLogin(email, isNewAccount: true);
+        SaveCredentials(email, password);
 
         Debug.Log("PlayFab signup successful. PlayFabId: " + result.PlayFabId);
-        // TODO: proceed to main menu / gameplay
+        canvasManager.ShowOnly(namePanel);
     }
 
     void OnSignupFailure(PlayFabError error)
@@ -159,10 +222,13 @@ public class PlayFabAuthManager : MonoBehaviour
         loginErrorText.text = "";
 
         string email = loginEmailInput.text.Trim();
+        string password = loginPasswordInput.text;
+
         TrackPlayerLogin(email, isNewAccount: false);
+        SaveCredentials(email, password);
 
         Debug.Log("PlayFab login successful. PlayFabId: " + result.PlayFabId);
-        // TODO: proceed to main menu / gameplay
+        canvasManager.ShowOnly(menuPanel);
     }
 
     void OnLoginFailure(PlayFabError error)
@@ -170,6 +236,50 @@ public class PlayFabAuthManager : MonoBehaviour
         loginButton.interactable = true;
         loginErrorText.text = "Login failed: " + error.ErrorMessage;
         Debug.LogError("PlayFab login failed: " + error.GenerateErrorReport());
+    }
+
+    // ---------------- NAME PANEL (post-signup) ----------------
+
+    void OnNameConfirmClicked()
+    {
+        if (!PlayFabClientAPI.IsClientLoggedIn())
+        {
+            nameErrorText.text = "Session expired — please log in again.";
+            Debug.LogWarning("NamePanel reached without an active PlayFab session. Returning to Login.");
+            canvasManager.ShowOnly(loginPanel);
+            return;
+        }
+
+        string displayName = nameInput.text.Trim();
+
+        if (displayName.Length < 3)
+        {
+            nameErrorText.text = "Name must be at least 3 characters.";
+            return;
+        }
+
+        nameConfirmButton.interactable = false;
+        nameErrorText.text = "Saving...";
+
+        var request = new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = displayName
+        };
+
+        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnNameSuccess, OnNameFailure);
+    }
+
+    void OnNameSuccess(UpdateUserTitleDisplayNameResult result)
+    {
+        nameConfirmButton.interactable = true;
+        canvasManager.ShowOnly(menuPanel);
+    }
+
+    void OnNameFailure(PlayFabError error)
+    {
+        nameConfirmButton.interactable = true;
+        nameErrorText.text = "Failed to save name: " + error.ErrorMessage;
+        Debug.LogError("UpdateUserTitleDisplayName failed: " + error.GenerateErrorReport());
     }
 
     // ---------------- TRACKING (via PlayFab Player Data) ----------------
