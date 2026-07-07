@@ -90,6 +90,7 @@ public class PlayFabAuthManager : MonoBehaviour
     {
         Debug.Log("Auto-login successful. PlayFabId: " + result.PlayFabId);
         TrackPlayerLogin(PlayerPrefs.GetString(SavedEmailKey), isNewAccount: false);
+        AdManager.Instance?.FetchAdsRemovedStatus();
         canvasManager.ShowOnly(menuPanel);
     }
 
@@ -122,6 +123,8 @@ public class PlayFabAuthManager : MonoBehaviour
         string email = signupEmailInput.text.Trim();
         string password = signupPasswordInput.text;
         string confirmPassword = signupConfirmPasswordInput.text;
+
+        Debug.Log("[Signup] Raw email read from input field: '" + email + "' (length: " + email.Length + ")");
 
         if (!GmailRegex.IsMatch(email))
         {
@@ -228,6 +231,7 @@ public class PlayFabAuthManager : MonoBehaviour
         SaveCredentials(email, password);
 
         Debug.Log("PlayFab login successful. PlayFabId: " + result.PlayFabId);
+        AdManager.Instance?.FetchAdsRemovedStatus();
         canvasManager.ShowOnly(menuPanel);
     }
 
@@ -272,6 +276,7 @@ public class PlayFabAuthManager : MonoBehaviour
     void OnNameSuccess(UpdateUserTitleDisplayNameResult result)
     {
         nameConfirmButton.interactable = true;
+        AdManager.Instance?.FetchAdsRemovedStatus();
         canvasManager.ShowOnly(menuPanel);
     }
 
