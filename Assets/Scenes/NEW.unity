@@ -1716,8 +1716,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32854dcd142e9fd428984973fea56ce6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxY: 0
-  minY: -805
+  maxY: -350
+  minY: -1500
   bounceSpeed: 10
   elasticity: 10
 --- !u!1 &358695537
